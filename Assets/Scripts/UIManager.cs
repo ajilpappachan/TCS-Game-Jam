@@ -12,11 +12,6 @@ public class UIManager : MonoBehaviour
     [Header("Text")]
     [SerializeField] private Text gameOverText;
 
-    private void Start()
-    {
-        print(SceneManager.GetSceneAt(0));
-    }
-
     public void GameOver(bool win)
     {
         Time.timeScale = 0.0f;
