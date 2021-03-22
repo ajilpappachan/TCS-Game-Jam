@@ -7,6 +7,7 @@ public class PlayerCharacter : Character
     // Start is called before the first frame update
     void Start()
     {
+        //Initialise base character settings
         InitCharacter();
     }
 
@@ -16,6 +17,7 @@ public class PlayerCharacter : Character
         UpdateMovement();
     }
 
+    //Rotate player left and right and move in that direction
     private void UpdateMovement()
     {
         _transform.rotation = Quaternion.Euler(moveRotation);

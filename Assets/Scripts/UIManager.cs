@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [Header("Text")]
     [SerializeField] private Text gameOverText;
 
+    //Gameplay HUD functions to restart game or go back to menu
     public void GameOver(bool win)
     {
         Time.timeScale = 0.0f;

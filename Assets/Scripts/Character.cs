@@ -35,6 +35,7 @@ public class Character : MonoBehaviour
         
     }
 
+    //Initialise Base character Settings
     protected void InitCharacter()
     {
         moveRotation = Vector3.zero;
@@ -46,16 +47,19 @@ public class Character : MonoBehaviour
         }
     }
 
+    //Get a unit from this character
     public UnitCharacter GetTarget()
     {
         return _units[0];
     }
 
+    //Change the material of a unit based on it's level
     protected void UpdateMaterial(UnitCharacter unit)
     {
         unit._renderer.sharedMaterial = _unitMaterials[unit.level];
     }
 
+    //Destroy a unit and check if the game is won or lost
     public void DestroyUnit(UnitCharacter unit)
     {
         _units.Remove(unit);
@@ -67,6 +71,7 @@ public class Character : MonoBehaviour
         }
     } 
     
+    //Eat a unit and multiply and cause a chain reaction
     public void Eat(UnitCharacter unit, UnitCharacter target)
     {
         if (!target) return;
@@ -85,6 +90,7 @@ public class Character : MonoBehaviour
         target._parent.DestroyUnit(target);
     }
 
+    //Update the levels of all the units of the character having lower level than the unit that ate another unit
     private bool ChainReact(UnitCharacter unit)
     {
         if(unit.level > _unitMaterials.Length - 1)

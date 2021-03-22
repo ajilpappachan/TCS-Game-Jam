@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject howToPanel;
 
+    //Main Menu Functions
     public void Play()
     {
         LevelManager.Instance.LoadLevel("Game");

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AICharacter : Character
 {
+    //Finite State Machine for AI behaviour
     public enum State { Patrol, Follow, Flee };
 
     public State _state = State.Patrol;
@@ -16,6 +17,7 @@ public class AICharacter : Character
     // Start is called before the first frame update
     void Start()
     {
+        //Initialise base character settings
         InitCharacter();
     }
 
@@ -25,6 +27,7 @@ public class AICharacter : Character
         UpdateMovement();
     }
 
+    //Call corresponding movement function based on FSM
     private void UpdateMovement()
     {
         switch(_state)
@@ -45,6 +48,7 @@ public class AICharacter : Character
         
     }
 
+    //Move to random directions and avoid colliding with the wall and look for enemies
     private void Patrol()
     {
         bool sweepResult = false;
@@ -78,6 +82,7 @@ public class AICharacter : Character
 
     }
 
+    //Follow an enemy when found and try to eat them
     private void Follow()
     {
         if (!target)
@@ -100,6 +105,7 @@ public class AICharacter : Character
         _transform.position += _transform.forward * moveSpeed * Time.deltaTime;
     }
 
+    //Flee if the enemy has higher number of units or if the enemy is the player
     private void Flee()
     {
         if (!target)

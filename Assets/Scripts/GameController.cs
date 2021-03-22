@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
         GetInput();
     }
 
+    //Get input for player movement
     private void GetInput()
     {
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
@@ -35,6 +36,7 @@ public class GameController : MonoBehaviour
         }
     }
 
+    //Check if the player is dead or if there are no enemies left and call Game Win or Lose function
     public void CheckWin(Character character)
     {
         if(character is PlayerCharacter)

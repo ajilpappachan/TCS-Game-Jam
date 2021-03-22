@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    //Singleton Instance
     public static LevelManager Instance;
 
     private string sceneToLoad;
@@ -21,6 +22,7 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    //Show the loading screen and load the level
     public void LoadLevel(string level)
     {
         sceneToLoad = level;

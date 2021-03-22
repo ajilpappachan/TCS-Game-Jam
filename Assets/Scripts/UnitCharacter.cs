@@ -35,6 +35,7 @@ public class UnitCharacter : MonoBehaviour
         
     }
 
+    //Eat the collided unit and multiply/chain react
     private void Eat(UnitCharacter unit)
     {
         _parent.Eat(this, unit);
