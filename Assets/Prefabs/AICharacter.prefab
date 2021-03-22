@@ -15,15 +15,17 @@ MonoBehaviour:
   _transform: {fileID: 0}
   _gameobject: {fileID: 0}
   units: []
-  _startMaterial: {fileID: 2100000, guid: 6fdd1de55bf1cf742b7ba3fb2c48a6a2, type: 2}
-  _level1Material: {fileID: 2100000, guid: ac31a0c504a65fa4a9438b3249e798e1, type: 2}
-  _level2Material: {fileID: 2100000, guid: 2991b1d6e0753b44faeeaa69cfa7747d, type: 2}
-  _level3Material: {fileID: 2100000, guid: 33b206337440cfe4cb396f16f0c9d0aa, type: 2}
+  _unitMaterials:
+  - {fileID: 2100000, guid: 6fdd1de55bf1cf742b7ba3fb2c48a6a2, type: 2}
+  - {fileID: 2100000, guid: ac31a0c504a65fa4a9438b3249e798e1, type: 2}
+  - {fileID: 2100000, guid: 2991b1d6e0753b44faeeaa69cfa7747d, type: 2}
+  - {fileID: 2100000, guid: 33b206337440cfe4cb396f16f0c9d0aa, type: 2}
   moveSpeed: 5
   rotateSpeed: 5
   moveRotation: {x: 0, y: 0, z: 0}
   _state: 0
   _targetRange: 8
+  _targetMaxRange: 15
   target: {fileID: 0}
 --- !u!1001 &2147411978184387394
 PrefabInstance:

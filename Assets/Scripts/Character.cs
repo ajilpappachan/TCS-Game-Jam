@@ -7,18 +7,21 @@ public class Character : MonoBehaviour
     [Header("GameObject Data")]
     [HideInInspector] public Transform _transform;
     [HideInInspector] public GameObject _gameobject;
-    [HideInInspector] public List<UnitCharacter> units;
+    [HideInInspector] public List<UnitCharacter> _units;
 
     [Header("Mesh Data")]
-    [SerializeField] protected Material _startMaterial;
-    [SerializeField] protected Material _level1Material;
-    [SerializeField] protected Material _level2Material;
-    [SerializeField] protected Material _level3Material;
+    [SerializeField] private Material[] _unitMaterials;
 
     [Header("Movement Data")]
     public float moveSpeed;
     public float rotateSpeed;
     public Vector3 moveRotation;
+
+    private void Awake()
+    {
+        _transform = transform;
+        _gameobject = gameObject;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,34 +37,72 @@ public class Character : MonoBehaviour
 
     protected void InitCharacter()
     {
-        _transform = transform;
-        _gameobject = gameObject;
-        units = new List<UnitCharacter>();
+        moveRotation = Vector3.zero;
+        _units = new List<UnitCharacter>();
         foreach (UnitCharacter unit in GetComponentsInChildren<UnitCharacter>())
         {
-            units.Add(unit);
-            UpdateMaterial(unit._renderer, _startMaterial);
+            _units.Add(unit);
+            UpdateMaterial(unit);
         }
     }
 
     public UnitCharacter GetTarget()
     {
-        return units[0];
+        return _units[0];
     }
 
-    protected void UpdateMaterial(MeshRenderer _renderer, Material mat)
+    protected void UpdateMaterial(UnitCharacter unit)
     {
-        _renderer.sharedMaterial = mat;
+        unit._renderer.sharedMaterial = _unitMaterials[unit.level];
     }
 
     public void DestroyUnit(UnitCharacter unit)
     {
-        units.Remove(unit);
+        _units.Remove(unit);
         Destroy(unit._gameobject);
-        if (units.Count == 0)
+        if (_units.Count == 0 && _gameobject)
         {
             Debug.Log("Kill Character");
             Destroy(_gameobject);
         }
-    }    
+    } 
+    
+    public void Eat(UnitCharacter unit, UnitCharacter target)
+    {
+        if (!target) return;
+
+        unit.level++;
+
+        if(ChainReact(unit))
+        {
+            UpdateMaterial(unit);
+            UnitCharacter newUnit = Instantiate(unit._gameobject, _transform).GetComponent<UnitCharacter>();
+            _units.Add(newUnit);
+            newUnit.level = unit.level;
+            UpdateMaterial(newUnit);
+        }
+
+        target._parent.DestroyUnit(target);
+    }
+
+    private bool ChainReact(UnitCharacter unit)
+    {
+        if(unit.level > _unitMaterials.Length - 1)
+        {
+            DestroyUnit(unit);
+            return false;
+        }
+        else
+        {
+            foreach(UnitCharacter uni in _units)
+            {
+                if(uni.level < unit.level - 1)
+                {
+                    uni.level++;
+                    UpdateMaterial(uni);
+                }
+            }
+            return true;
+        }
+    }
 }

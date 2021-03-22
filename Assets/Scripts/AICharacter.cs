@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class AICharacter : Character
 {
-    enum State { Patrol, Follow, Attack };
+    public enum State { Patrol, Follow, Flee };
 
-    [SerializeField] private State _state = State.Patrol;
+    public State _state = State.Patrol;
 
     [Header("AI Settings")]
     public float _targetRange;
+    public float _targetMaxRange;
     [SerializeField] private UnitCharacter target;
 
     // Start is called before the first frame update
     void Start()
     {
-        moveRotation.y = Random.Range(0, 180);
         InitCharacter();
     }
 
@@ -35,26 +35,34 @@ public class AICharacter : Character
             case State.Follow:
                 Follow();
                 break;
-            case State.Attack:
-                Attack();
+            case State.Flee:
+                Flee();
                 break;
             default:
                 _state = State.Patrol;
                 break;
         }
-        _transform.position += _transform.forward * moveSpeed * Time.deltaTime;
+        
     }
 
     private void Patrol()
     {
         bool sweepResult = false;
-        if(units[0]._rigidbody.SweepTest(units[0]._transform.forward, out RaycastHit hit, _targetRange))
+        if(_units[0]._rigidbody.SweepTest(_units[0]._transform.forward, out RaycastHit hit, _targetRange))
         {
             if(hit.collider.TryGetComponent(out Character character))
             {
                 target = character.GetTarget();
-                _state = State.Follow;
-                return;
+                if(character._units.Count > _units.Count)
+                {
+                    _state = State.Flee;
+                    return;
+                }
+                else
+                {
+                    _state = State.Follow;
+                    return;
+                }
             }
             if(hit.collider.CompareTag("Boundary"))
             {
@@ -66,17 +74,51 @@ public class AICharacter : Character
             moveRotation.y = Random.Range(0, 180);
             _transform.rotation = Quaternion.Euler(moveRotation);
         }
-        
+        _transform.position += _transform.forward * moveSpeed * Time.deltaTime;
+
     }
 
     private void Follow()
     {
+        if (!target)
+        {
+            _state = State.Patrol;
+            return;
+        }
 
+        Vector3 moveDirection = target._transform.position - _transform.position;
+        if (moveDirection.magnitude < _targetMaxRange)
+        {
+            _transform.rotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+        }
+        else
+        {
+            target = null;
+            _state = State.Patrol;
+            return;
+        }
+        _transform.position += _transform.forward * moveSpeed * Time.deltaTime;
     }
 
-    private void Attack()
+    private void Flee()
     {
+        if (!target)
+        {
+            _state = State.Patrol;
+            return;
+        }
 
+        Vector3 fleeDirection = target._transform.position - _transform.position;
+        if(fleeDirection.magnitude > _targetMaxRange)
+        {
+            _state = State.Patrol;
+            return;
+        }
+        else
+        {
+            moveRotation = Quaternion.LookRotation(-fleeDirection).eulerAngles;
+            Patrol();
+        }
     }
 
     private void OnTriggerEnter(Collider other)

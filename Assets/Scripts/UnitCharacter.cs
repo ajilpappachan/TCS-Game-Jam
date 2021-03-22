@@ -9,12 +9,12 @@ public class UnitCharacter : MonoBehaviour
     [HideInInspector] public GameObject _gameobject;
     [HideInInspector] public Rigidbody _rigidbody;
     [HideInInspector] public Character _parent;
+    [HideInInspector] public int level = 0;
 
     [Header("Mesh Data")]
     [HideInInspector] public MeshRenderer _renderer;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         _transform = transform;
         _gameobject = gameObject;
@@ -23,10 +23,21 @@ public class UnitCharacter : MonoBehaviour
         _parent = GetComponentInParent<Character>();
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void Eat(UnitCharacter unit)
+    {
+        _parent.Eat(this, unit);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,6 +45,23 @@ public class UnitCharacter : MonoBehaviour
         if(other.CompareTag("Boundary"))
         {
             _parent.DestroyUnit(this);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.TryGetComponent(out UnitCharacter unit))
+        {
+            if (unit._parent == _parent) return;
+            if(_parent is AICharacter)
+            {
+                AICharacter parent = (AICharacter)_parent;
+                if (parent._state == AICharacter.State.Follow)
+                {
+                    Eat(unit);
+                    parent._state = AICharacter.State.Patrol;
+                }
+            }
         }
     }
 }
