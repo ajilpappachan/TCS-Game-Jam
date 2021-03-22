@@ -13,8 +13,8 @@ public class Character : MonoBehaviour
     [SerializeField] private Material[] _unitMaterials;
 
     [Header("Movement Data")]
-    public float moveSpeed;
-    public float rotateSpeed;
+    [Range(0, 100)] public float moveSpeed;
+    [Range(0, 100)] public float rotateSpeed;
     public Vector3 moveRotation;
 
     private void Awake()
@@ -62,8 +62,8 @@ public class Character : MonoBehaviour
         Destroy(unit._gameobject);
         if (_units.Count == 0 && _gameobject)
         {
-            Debug.Log("Kill Character");
             Destroy(_gameobject);
+            FindObjectOfType<GameController>().CheckWin(this);
         }
     } 
     

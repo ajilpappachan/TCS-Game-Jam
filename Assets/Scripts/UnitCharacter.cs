@@ -62,6 +62,10 @@ public class UnitCharacter : MonoBehaviour
                     parent._state = AICharacter.State.Patrol;
                 }
             }
+            else
+            {
+                Eat(unit);
+            }
         }
     }
 }

@@ -48,12 +48,12 @@ public class AICharacter : Character
     private void Patrol()
     {
         bool sweepResult = false;
-        if(_units[0]._rigidbody.SweepTest(_units[0]._transform.forward, out RaycastHit hit, _targetRange))
+        if (_units[0]._rigidbody.SweepTest(_units[0]._transform.forward, out RaycastHit hit, _targetRange))
         {
-            if(hit.collider.TryGetComponent(out Character character))
+            if (hit.collider.TryGetComponent(out Character character))
             {
                 target = character.GetTarget();
-                if(character._units.Count > _units.Count)
+                if (character._units.Count > _units.Count || character is PlayerCharacter)
                 {
                     _state = State.Flee;
                     return;
@@ -64,7 +64,7 @@ public class AICharacter : Character
                     return;
                 }
             }
-            if(hit.collider.CompareTag("Boundary"))
+            if (hit.collider.CompareTag("Boundary"))
             {
                 sweepResult = true;
             }
@@ -109,7 +109,7 @@ public class AICharacter : Character
         }
 
         Vector3 fleeDirection = target._transform.position - _transform.position;
-        if(fleeDirection.magnitude > _targetMaxRange)
+        if (fleeDirection.magnitude > _targetMaxRange)
         {
             _state = State.Patrol;
             return;
@@ -119,10 +119,5 @@ public class AICharacter : Character
             moveRotation = Quaternion.LookRotation(-fleeDirection).eulerAngles;
             Patrol();
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-
     }
 }
