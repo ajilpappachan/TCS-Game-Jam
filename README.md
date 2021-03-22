@@ -14,4 +14,6 @@ Player and AI controls 4 character units each. Eating a unit of an enemy using y
 
 ---
 
+Music Used from [Free Music Archive](https://freemusicarchive.org/)
+
 View Project [Trello Board](https://trello.com/b/RridXDCm")
