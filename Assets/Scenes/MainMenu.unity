@@ -1198,13 +1198,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player and AI controls 4 character units each. Eating a unit of an enemy
+  m_Text: Use A/D or Left/Right Arrows to rotate player. Eating a unit of an enemy
     using your unit multiples that unit and upgrades their level, and causes a chain
     reaction where all other units (having lower levels than the unit that caused
     the reaction) of the player/AI gets upgraded to one level above their own. Each
-    unit can level up 3 times before their next level up kills them. The objective
-    of the game is to eat and multiply your units. You win the game if you are the
-    last one standing. and lose the game if you die.
+    unit can level up 3 times before their next level up kills them. You win the
+    game if you are the last one standing. and lose the game if you die.
 --- !u!222 &1133577118
 CanvasRenderer:
   m_ObjectHideFlags: 0
